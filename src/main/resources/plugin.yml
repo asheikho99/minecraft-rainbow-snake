@@ -1,0 +1,7 @@
+name: rainbow-snake
+version: '${project.version}'
+main: com.example.rainbowsnake.Main
+api-version: 1.19
+prefix: rainbow-snake
+authors: [asheikho99]
+website: https://github.com/asheikho99
