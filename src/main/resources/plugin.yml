@@ -5,3 +5,7 @@ api-version: 1.19
 prefix: rainbow-snake
 authors: [asheikho99]
 website: https://github.com/asheikho99
+commands:
+  snake:
+    description: Obtain Rainbow Snake feather
+    usage: /<command>
