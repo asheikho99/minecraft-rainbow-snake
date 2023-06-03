@@ -40,11 +40,20 @@ public class UseSnake implements Listener {
                 if (Objects.requireNonNull(itemInHand.getItemMeta()).getDisplayName().equalsIgnoreCase("Rainbow Snake")) {
 
                     Player player = event.getPlayer();
+                    Location playerLocation = player.getLocation();
+
                     new BukkitRunnable() {
                         int tickCount = 0;
                         @Override
                         public void run() {
-                            spawnFallingBlock(player);
+                            World world = player.getWorld();
+                            FallingBlock fb = world.spawnFallingBlock(playerLocation, snakeBody.getBodyBlocks().get((int) (Math.random() * snakeBody.getBodyBlocks().size())));
+                            fb.setVelocity(new Vector(1, 1, 0));
+                            fb.setDropItem(false);
+
+                            if(tickCount == 0){
+                                fb.addPassenger(player);
+                            }
 
                             tickCount++;
                             if(tickCount == 20) this.cancel();
@@ -54,12 +63,5 @@ public class UseSnake implements Listener {
             }
 
         }
-    }
-
-    private void spawnFallingBlock(Player player) {
-        World world = player.getWorld();
-        FallingBlock fb = world.spawnFallingBlock(new Location(world, 0, 80, 0), snakeBody.getBodyBlocks().get((int) (Math.random() * snakeBody.getBodyBlocks().size())));
-        fb.setVelocity(new Vector(1, 1, 0));
-        fb.setDropItem(false);
     }
 }
