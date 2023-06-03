@@ -43,11 +43,10 @@ public class UseSnake implements Listener {
                         int tickCount = 0;
                         @Override
                         public void run() {
-
                             World world = player.getWorld();
                             FallingBlock fb = world.spawnFallingBlock(new Location(world, 0, 80, 0), Material.BLUE_STAINED_GLASS.createBlockData());
                             fb.setVelocity(new Vector(1, 1, 0));
-                            fb.setDropItem(true);
+                            fb.setDropItem(false);
 
                             tickCount++;
                             if(tickCount == 20) this.cancel();
