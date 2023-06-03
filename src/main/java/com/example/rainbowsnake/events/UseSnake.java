@@ -1,6 +1,7 @@
 package com.example.rainbowsnake.events;
 
 import com.example.rainbowsnake.lib.SnakeBody;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -40,20 +41,20 @@ public class UseSnake implements Listener {
                 if (Objects.requireNonNull(itemInHand.getItemMeta()).getDisplayName().equalsIgnoreCase("Rainbow Snake")) {
 
                     Player player = event.getPlayer();
+                    World world = player.getWorld();
                     Location playerLocation = player.getLocation();
+                    Vector playerDirection = player.getFacing().getDirection().setY(1);
 
                     new BukkitRunnable() {
                         int tickCount = 0;
                         @Override
                         public void run() {
-                            World world = player.getWorld();
+
                             FallingBlock fb = world.spawnFallingBlock(playerLocation, snakeBody.getBodyBlocks().get((int) (Math.random() * snakeBody.getBodyBlocks().size())));
-                            fb.setVelocity(new Vector(1, 1, 0));
+                            fb.setVelocity(playerDirection);
                             fb.setDropItem(false);
 
-                            if(tickCount == 0){
-                                fb.addPassenger(player);
-                            }
+                            if(tickCount == 0) fb.addPassenger(player);
 
                             tickCount++;
                             if(tickCount == 20) this.cancel();
