@@ -3,6 +3,7 @@ package com.example.rainbowsnake;
 import com.example.rainbowsnake.commands.CommandSnake;
 import com.example.rainbowsnake.events.BlockForm;
 import com.example.rainbowsnake.events.UseSnake;
+import com.example.rainbowsnake.lib.SnakeBody;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,8 +14,11 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         Objects.requireNonNull(this.getCommand("snake")).setExecutor(new CommandSnake());
-        getServer().getPluginManager().registerEvents(new UseSnake(this), this);
-        getServer().getPluginManager().registerEvents(new BlockForm(), this);
+
+        SnakeBody snakeBody = new SnakeBody();
+
+        getServer().getPluginManager().registerEvents(new UseSnake(this, snakeBody), this);
+        getServer().getPluginManager().registerEvents(new BlockForm(snakeBody), this);
     }
 
     @Override

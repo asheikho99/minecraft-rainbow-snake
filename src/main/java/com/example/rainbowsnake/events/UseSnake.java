@@ -1,5 +1,6 @@
 package com.example.rainbowsnake.events;
 
+import com.example.rainbowsnake.lib.SnakeBody;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -19,9 +20,10 @@ import java.util.Objects;
 public class UseSnake implements Listener {
 
     private final Plugin plugin;
-
-    public UseSnake(Plugin plugin){
+    private final SnakeBody snakeBody;
+    public UseSnake(Plugin plugin, SnakeBody snakeBody){
         this.plugin = plugin;
+        this.snakeBody = snakeBody;
     }
 
     @EventHandler
@@ -38,23 +40,26 @@ public class UseSnake implements Listener {
                 if (Objects.requireNonNull(itemInHand.getItemMeta()).getDisplayName().equalsIgnoreCase("Rainbow Snake")) {
 
                     Player player = event.getPlayer();
-                    player.sendMessage("Used Rainbow Snake!!");
                     new BukkitRunnable() {
                         int tickCount = 0;
                         @Override
                         public void run() {
-                            World world = player.getWorld();
-                            FallingBlock fb = world.spawnFallingBlock(new Location(world, 0, 80, 0), Material.BLUE_STAINED_GLASS.createBlockData());
-                            fb.setVelocity(new Vector(1, 1, 0));
-                            fb.setDropItem(false);
+                            spawnFallingBlock(player);
 
                             tickCount++;
                             if(tickCount == 20) this.cancel();
                         }
-                    }.runTaskTimer(plugin, 0,5);
+                    }.runTaskTimer(plugin, 0,1);
                 }
             }
 
         }
+    }
+
+    private void spawnFallingBlock(Player player) {
+        World world = player.getWorld();
+        FallingBlock fb = world.spawnFallingBlock(new Location(world, 0, 80, 0), snakeBody.getBodyBlocks().get((int) (Math.random() * snakeBody.getBodyBlocks().size())));
+        fb.setVelocity(new Vector(1, 1, 0));
+        fb.setDropItem(false);
     }
 }
